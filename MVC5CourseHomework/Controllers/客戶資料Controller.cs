@@ -20,6 +20,22 @@ namespace MVC5CourseHomework.Controllers
             return View(db.客戶資料.ToList());
         }
 
+        public ActionResult Search(string custName, string custUid, string custTel, string custFax)
+        {
+            var 客戶資料 = db.客戶資料.AsQueryable();
+
+            if (!string.IsNullOrEmpty(custName))
+                客戶資料 = 客戶資料.Where(w => w.客戶名稱.Contains(custName));
+            if (!string.IsNullOrEmpty(custUid))
+                客戶資料 = 客戶資料.Where(w => w.統一編號.Contains(custUid));
+            if (!string.IsNullOrEmpty(custTel))
+                客戶資料 = 客戶資料.Where(w => w.電話.Contains(custTel));
+            if (!string.IsNullOrEmpty(custFax))
+            客戶資料 = 客戶資料.Where(w => w.傳真.Contains(custFax));
+
+            return View("Index", 客戶資料);
+        }
+
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)
         {

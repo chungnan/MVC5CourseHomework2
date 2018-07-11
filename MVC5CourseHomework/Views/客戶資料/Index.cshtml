@@ -6,6 +6,16 @@
 
 <h2>Index</h2>
 
+@using (Html.BeginForm("Search", "客戶資料", FormMethod.Get))
+{
+    @Html.TextBox("custName", null, new { @class = "form-control", placeholder = "請輸入客戶名稱" })
+    @Html.TextBox("custUid", null, new { @class = "form-control", placeholder = "請輸入統一編號" })
+    @Html.TextBox("custTel", null, new { @class = "form-control", placeholder = "請輸入電話號碼" })
+    @Html.TextBox("custFax", null, new { @class = "form-control", placeholder = "請輸入傳真號碼" })
+
+    <input class="btn btn-primary" type="submit" />
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -32,32 +42,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.客戶名稱)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.統一編號)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.電話)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.傳真)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.地址)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.客戶名稱)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.統一編號)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.電話)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.傳真)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.地址)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
