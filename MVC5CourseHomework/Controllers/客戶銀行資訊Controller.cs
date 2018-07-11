@@ -18,12 +18,12 @@ namespace MVC5CourseHomework.Controllers
         public ActionResult Index()
         {
             var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
-            return View(客戶銀行資訊.ToList());
+            return View(客戶銀行資訊.Where(w => w.是否已刪除 == false).ToList());
         }
 
         public ActionResult Search(string bankName)
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.AsQueryable();
+            var 客戶銀行資訊 = db.客戶銀行資訊.Where(w => w.是否已刪除 == false).AsQueryable();
 
             if (!string.IsNullOrEmpty(bankName))
                 客戶銀行資訊 = 客戶銀行資訊.Where(w => w.銀行名稱.Contains(bankName));
@@ -125,7 +125,7 @@ namespace MVC5CourseHomework.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
+            客戶銀行資訊.是否已刪除 = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
