@@ -36,6 +36,24 @@ namespace MVC5CourseHomework.Models
         {
             entity.是否已刪除 = true;
         }
+
+        internal bool CheckMail(int id, string email, int 客戶id)
+        {
+            bool boolResult = false;
+
+            if (id == 0)
+            {
+                // 新增時檢查 E-Mail 是否重複
+                boolResult = this.All().Any(w => w.Email.Equals(email) && w.客戶Id.Equals(客戶id));
+            }
+            else
+            {
+                // 編輯時檢查 E-Mail 是否重複，需排除本身 id
+                boolResult = this.All().Any(w => w.Email.Equals(email) && w.客戶Id.Equals(客戶id) & w.Id != id);
+            }
+
+            return boolResult;
+        }
     }
 
     public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>

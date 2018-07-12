@@ -5,8 +5,18 @@ namespace MVC5CourseHomework.Models
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(客戶聯絡人MetaData))]
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : IValidatableObject
     {
+        // 實作模型驗證
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            客戶聯絡人Repository custContantRepo = RepositoryHelper.Get客戶聯絡人Repository();
+
+            if (custContantRepo.CheckMail(this.Id, this.Email, this.客戶Id))
+            {
+                yield return new ValidationResult("您輸入的 E-Mail 已重複存在", new string[] { "Email" });
+            }
+        }
     }
 
     public partial class 客戶聯絡人MetaData
