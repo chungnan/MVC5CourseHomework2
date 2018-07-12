@@ -32,11 +32,7 @@ namespace MVC5CourseHomework.Controllers
 
         public ActionResult Search(string custName, string custUid, string custTel, string custFax, string custCategory)
         {
-            var data = customerRepo.Search(custName, custUid, custTel, custFax);
-
-            if (!string.IsNullOrEmpty(custCategory))
-                data = data.Where(w => w.客戶分類.Equals(custCategory));
-
+            var data = customerRepo.Search(custName, custUid, custTel, custFax, custCategory);
             var categoryData = customerRepo.GetCustomerCategory();
             ViewBag.custCategory = new SelectList(categoryData);
             return View("Index", data);

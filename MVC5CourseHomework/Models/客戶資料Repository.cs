@@ -11,7 +11,7 @@ namespace MVC5CourseHomework.Models
             return base.All().Where(w => w.是否已刪除 == false);
         }
 
-        internal IQueryable<客戶資料> Search(string custName, string custUid, string custTel, string custFax)
+        internal IQueryable<客戶資料> Search(string custName, string custUid, string custTel, string custFax, string custCategory)
         {
             var data = this.All();
 
@@ -26,6 +26,9 @@ namespace MVC5CourseHomework.Models
 
             if (!string.IsNullOrEmpty(custFax))
                 data = data.Where(w => w.傳真.Contains(custFax));
+
+            if (!string.IsNullOrEmpty(custCategory))
+                data = data.Where(w => w.客戶分類.Equals(custCategory));
 
             return data;
         }
