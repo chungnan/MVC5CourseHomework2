@@ -11,7 +11,7 @@ namespace MVC5CourseHomework.Models
             return base.All().Where(w => w.是否已刪除 == false);
         }
 
-        internal IQueryable<客戶聯絡人> Search(string contantName, string contantPhone, string contantTel)
+        internal IQueryable<客戶聯絡人> Search(string contantName, string contantPhone, string contantTel, string contantTitle)
         {
             var data = this.All();
 
@@ -23,6 +23,9 @@ namespace MVC5CourseHomework.Models
 
             if (!string.IsNullOrEmpty(contantTel))
                 data = data.Where(w => w.電話.Contains(contantTel));
+
+            if (!string.IsNullOrEmpty(contantTitle))
+                data = data.Where(w => w.職稱.Equals(contantTitle));
 
             return data;
         }
@@ -53,6 +56,11 @@ namespace MVC5CourseHomework.Models
             }
 
             return boolResult;
+        }
+
+        public IQueryable<string> GetContantTitle()
+        {
+            return this.All().Select(s => s.職稱 ).Distinct();
         }
     }
 

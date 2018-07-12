@@ -12,7 +12,7 @@
         @Html.TextBox("contantName", null, new { @class = "form-control", placeholder = "請輸入姓名" })
         @Html.TextBox("contantPhone", null, new { @class = "form-control", placeholder = "請輸入手機" })
         @Html.TextBox("contantTel", null, new { @class = "form-control", placeholder = "請輸入電話" })
-
+        @Html.DropDownList("contantTitle", null, "-- 請選擇職稱 --", htmlAttributes: new { @class = "form-control" })
         <input class="btn btn-primary" type="submit" />
     </div>
 }

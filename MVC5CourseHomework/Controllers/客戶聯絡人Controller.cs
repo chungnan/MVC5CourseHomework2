@@ -24,13 +24,18 @@ namespace MVC5CourseHomework.Controllers
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
+            var titleData = custContantRepo.GetContantTitle();
+            ViewBag.contantTitle = new SelectList(titleData);
+
             var data = custContantRepo.All().ToList();
             return View(data);
         }
 
-        public ActionResult Search(string contantName, string contantPhone, string contantTel)
+        public ActionResult Search(string contantName, string contantPhone, string contantTel, string contantTitle)
         {
-            var data = custContantRepo.Search(contantName, contantPhone, contantTel);
+            var data = custContantRepo.Search(contantName, contantPhone, contantTel, contantTitle);
+            var titleData = custContantRepo.GetContantTitle();
+            ViewBag.contantTitle = new SelectList(titleData);
             return View("Index", data);
         }
 
