@@ -12,28 +12,25 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        private Customers db = new Customers();
+        // 09:50
+        客戶資料Repository customerRepo;
+
+        public 客戶資料Controller()
+        {
+            customerRepo = RepositoryHelper.Get客戶資料Repository();
+        }
 
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.Where(w => w.是否已刪除 == false).ToList());
+            var data = customerRepo.All();
+            return View(data);
         }
 
         public ActionResult Search(string custName, string custUid, string custTel, string custFax)
         {
-            var 客戶資料 = db.客戶資料.Where(w => w.是否已刪除 == false).AsQueryable();
-
-            if (!string.IsNullOrEmpty(custName))
-                客戶資料 = 客戶資料.Where(w => w.客戶名稱.Contains(custName));
-            if (!string.IsNullOrEmpty(custUid))
-                客戶資料 = 客戶資料.Where(w => w.統一編號.Contains(custUid));
-            if (!string.IsNullOrEmpty(custTel))
-                客戶資料 = 客戶資料.Where(w => w.電話.Contains(custTel));
-            if (!string.IsNullOrEmpty(custFax))
-            客戶資料 = 客戶資料.Where(w => w.傳真.Contains(custFax));
-
-            return View("Index", 客戶資料);
+            var data = customerRepo.Search(custName, custUid, custTel, custFax);
+            return View("Index", data);
         }
 
         // GET: 客戶資料/Details/5
@@ -43,7 +40,7 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = customerRepo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -66,8 +63,8 @@ namespace MVC5CourseHomework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                customerRepo.Add(客戶資料);
+                customerRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -81,7 +78,7 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = customerRepo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -98,6 +95,7 @@ namespace MVC5CourseHomework.Controllers
         {
             if (ModelState.IsValid)
             {
+                var db = customerRepo.UnitOfWork.Context;
                 db.Entry(客戶資料).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -112,7 +110,7 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = customerRepo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -125,9 +123,9 @@ namespace MVC5CourseHomework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            客戶資料.是否已刪除 = true;
-            db.SaveChanges();
+            客戶資料 客戶資料 = customerRepo.Find(id);
+            customerRepo.Delete(客戶資料);
+            customerRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -135,7 +133,7 @@ namespace MVC5CourseHomework.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                customerRepo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

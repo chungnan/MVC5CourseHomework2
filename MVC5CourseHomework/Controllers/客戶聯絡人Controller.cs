@@ -12,29 +12,26 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶聯絡人Controller : Controller
     {
-        private Customers db = new Customers();
+        客戶聯絡人Repository custContantRepo;
+        客戶資料Repository customerRepo;
+
+        public 客戶聯絡人Controller()
+        {
+            custContantRepo = RepositoryHelper.Get客戶聯絡人Repository();
+            customerRepo = RepositoryHelper.Get客戶資料Repository(custContantRepo.UnitOfWork);
+        }
 
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.Where(w => w.是否已刪除 == false).ToList());
+            var data = custContantRepo.All().ToList();
+            return View(data);
         }
 
-        public ActionResult Search(string custName, string custPhone, string custTel)
+        public ActionResult Search(string contantName, string contantPhone, string contantTel)
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Where(w => w.是否已刪除 == false).AsQueryable();
-
-            if (!string.IsNullOrEmpty(custName))
-                客戶聯絡人 = 客戶聯絡人.Where(w => w.姓名.Contains(custName));
-
-            if (!string.IsNullOrEmpty(custPhone))
-                客戶聯絡人 = 客戶聯絡人.Where(w => w.手機.Contains(custPhone));
-
-            if (!string.IsNullOrEmpty(custTel))
-                客戶聯絡人 = 客戶聯絡人.Where(w => w.電話.Contains(custTel));
-
-            return View("Index", 客戶聯絡人);
+            var data = custContantRepo.Search(contantName, contantPhone, contantTel);
+            return View("Index", data);
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -44,7 +41,7 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = custContantRepo.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -55,7 +52,8 @@ namespace MVC5CourseHomework.Controllers
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            var 客戶資料 = customerRepo.All();
+            ViewBag.客戶Id = new SelectList(客戶資料, "Id", "客戶名稱");
             return View();
         }
 
@@ -68,12 +66,13 @@ namespace MVC5CourseHomework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                custContantRepo.Add(客戶聯絡人);
+                custContantRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            var 客戶資料 = customerRepo.All();
+            ViewBag.客戶Id = new SelectList(客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -84,12 +83,14 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = custContantRepo.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+
+            var 客戶資料 = customerRepo.All();
+            ViewBag.客戶Id = new SelectList(客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -102,11 +103,14 @@ namespace MVC5CourseHomework.Controllers
         {
             if (ModelState.IsValid)
             {
+                var db = custContantRepo.UnitOfWork.Context;
                 db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                custContantRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+
+            var 客戶資料 = customerRepo.All();
+            ViewBag.客戶Id = new SelectList(客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -117,7 +121,7 @@ namespace MVC5CourseHomework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = custContantRepo.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -130,9 +134,9 @@ namespace MVC5CourseHomework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            客戶聯絡人.是否已刪除 = true;
-            db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = custContantRepo.Find(id);
+            custContantRepo.Delete(客戶聯絡人);
+            custContantRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -140,7 +144,7 @@ namespace MVC5CourseHomework.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                custContantRepo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<MVC5CourseHomework.Models.客戶銀行資訊>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "客戶銀行資訊列表";
 }
-<h2>Index</h2>
+<h2>客戶銀行資訊列表</h2>
 
 @using (Html.BeginForm("Search", "客戶銀行資訊", FormMethod.Get))
 {
@@ -13,9 +13,10 @@
     </div>
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p class="text-right">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -61,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.客戶資料.客戶名稱)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-warning" })
             </td>
         </tr>
     }
