@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 using MVC5CourseHomework.Models;
 
 namespace MVC5CourseHomework.Controllers
@@ -152,6 +154,42 @@ namespace MVC5CourseHomework.Controllers
             var bankData = bankRepo.All();
             var data = customerRepo.GetContantBankCount(contantData, bankData);
             return View(data);
+        }
+
+        public ActionResult Export(string custName, string custUid, string custTel, string custFax, string custCategory)
+        {
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                int timeStamp = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+
+                var data = customerRepo
+                    .Search(custName, custUid, custTel, custFax, custCategory)
+                    .Select(s => new { s.Id, s.客戶名稱, s.統一編號, s.電話, s.傳真, s.地址, s.Email, s.客戶分類 });
+
+                var ws = wb.Worksheets.Add("cusdata", 1);
+
+                ws.Cell("A1").Value = "Id";
+                ws.Cell("B1").Value = "客戶名稱";
+                ws.Cell("C1").Value = "統一編號";
+                ws.Cell("D1").Value = "電話";
+                ws.Cell("E1").Value = "傳真";
+                ws.Cell("F1").Value = "地址";
+                ws.Cell("G1").Value = "Email";
+                ws.Cell("H1").Value = "客戶分類";
+
+                ws.Cell(2, 1).InsertData(data);
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    return File(
+                        memoryStream.ToArray(),
+                        "application/vnd.ms-excel",
+                        $"Export_客戶資料_{timeStamp}.xlsx");
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)
