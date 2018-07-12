@@ -21,6 +21,20 @@ namespace MVC5CourseHomework.Models
 			return repository;
 		}		
 
+		public static View_客戶對應聯絡人及銀行帳戶數量Repository GetView_客戶對應聯絡人及銀行帳戶數量Repository()
+		{
+			var repository = new View_客戶對應聯絡人及銀行帳戶數量Repository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static View_客戶對應聯絡人及銀行帳戶數量Repository GetView_客戶對應聯絡人及銀行帳戶數量Repository(IUnitOfWork unitOfWork)
+		{
+			var repository = new View_客戶對應聯絡人及銀行帳戶數量Repository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static 客戶資料Repository Get客戶資料Repository()
 		{
 			var repository = new 客戶資料Repository();

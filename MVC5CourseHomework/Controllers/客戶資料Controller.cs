@@ -13,10 +13,16 @@ namespace MVC5CourseHomework.Controllers
     public class 客戶資料Controller : Controller
     {
         客戶資料Repository customerRepo;
+        View_客戶對應聯絡人及銀行帳戶數量Repository dbViewRepo;
+        客戶聯絡人Repository contantRepo;
+        客戶銀行資訊Repository bankRepo;
 
         public 客戶資料Controller()
         {
             customerRepo = RepositoryHelper.Get客戶資料Repository();
+            dbViewRepo = RepositoryHelper.GetView_客戶對應聯絡人及銀行帳戶數量Repository(customerRepo.UnitOfWork);
+            contantRepo = RepositoryHelper.Get客戶聯絡人Repository(customerRepo.UnitOfWork);
+            bankRepo = RepositoryHelper.Get客戶銀行資訊Repository(customerRepo.UnitOfWork);
         }
 
         // GET: 客戶資料
@@ -132,6 +138,20 @@ namespace MVC5CourseHomework.Controllers
             customerRepo.Delete(客戶資料);
             customerRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DbViewList()
+        {
+            var data = dbViewRepo.All();
+            return View(data);
+        }
+
+        public ActionResult ViewModelList()
+        {
+            var contantData = contantRepo.All();
+            var bankData = bankRepo.All();
+            var data = customerRepo.GetContantBankCount(contantData, bankData);
+            return View(data);
         }
 
         protected override void Dispose(bool disposing)

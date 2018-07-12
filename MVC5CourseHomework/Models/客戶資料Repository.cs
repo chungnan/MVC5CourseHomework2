@@ -48,6 +48,22 @@ namespace MVC5CourseHomework.Models
             return this.All().Select(s => s.客戶分類).Distinct();
         }
 
+        internal IQueryable<客戶對應聯絡人及銀行帳戶數量ViewModel> GetContantBankCount(
+            IQueryable<客戶聯絡人> contantData, IQueryable<客戶銀行資訊> bankData)
+        {
+            var data = (
+                from customer in this.All()
+                select new 客戶對應聯絡人及銀行帳戶數量ViewModel()
+                {
+                    客戶Id = customer.Id,
+                    客戶名稱 = customer.客戶名稱,
+                    聯絡人數量 = contantData.Where(w => w.客戶Id.Equals(customer.Id)).Count(),
+                    銀行帳戶數量 = bankData.Where(w => w.客戶Id.Equals(customer.Id)).Count()
+                })
+                .Take(10);
+
+            return data;
+        }
     }
 
     public  interface I客戶資料Repository : IRepository<客戶資料>

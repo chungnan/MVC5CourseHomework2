@@ -17,9 +17,15 @@
         <input class="btn btn-primary" type="submit" />
     </div>
 }
-
+<br />
 <p class="text-right">
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<p class="text-right">
+    @Html.ActionLink("DB View 客戶對應聯絡人及銀行帳戶數", "DbViewList")
+    <br />
+    @Html.ActionLink("ViewModel 客戶對應聯絡人及銀行帳戶數", "ViewModelList")
 </p>
 
 <table class="table">

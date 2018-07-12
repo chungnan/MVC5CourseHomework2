@@ -55,6 +55,18 @@
           <Property Name="電話" Type="nvarchar" MaxLength="50" />
           <Property Name="是否已刪除" Type="bit" Nullable="false" />
         </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'G:\PROJECTS\WEBAPPLICATION1\WEBAPPLICATION1\APP_DATA\客戶資料.MDF.dbo.View_客戶對應聯絡人及銀行帳戶數量' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="View_客戶對應聯絡人及銀行帳戶數量">
+          <Key>
+            <PropertyRef Name="客戶Id" />
+            <PropertyRef Name="客戶名稱" />
+          </Key>
+          <Property Name="客戶Id" Type="int" Nullable="false" />
+          <Property Name="客戶名稱" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="聯絡人數量" Type="int" />
+          <Property Name="銀行帳戶數量" Type="int" />
+        </EntityType>
         <Association Name="FK_客戶銀行資訊_客戶資料">
           <End Role="客戶資料" Type="Self.客戶資料" Multiplicity="1" />
           <End Role="客戶銀行資訊" Type="Self.客戶銀行資訊" Multiplicity="*" />
@@ -84,6 +96,14 @@
           <EntitySet Name="客戶資料" EntityType="Self.客戶資料" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="客戶銀行資訊" EntityType="Self.客戶銀行資訊" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="客戶聯絡人" EntityType="Self.客戶聯絡人" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_客戶對應聯絡人及銀行帳戶數量" EntityType="Self.View_客戶對應聯絡人及銀行帳戶數量" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_客戶對應聯絡人及銀行帳戶數量].[客戶Id] AS [客戶Id], 
+    [View_客戶對應聯絡人及銀行帳戶數量].[客戶名稱] AS [客戶名稱], 
+    [View_客戶對應聯絡人及銀行帳戶數量].[聯絡人數量] AS [聯絡人數量], 
+    [View_客戶對應聯絡人及銀行帳戶數量].[銀行帳戶數量] AS [銀行帳戶數量]
+    FROM [dbo].[View_客戶對應聯絡人及銀行帳戶數量] AS [View_客戶對應聯絡人及銀行帳戶數量]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_客戶銀行資訊_客戶資料" Association="Self.FK_客戶銀行資訊_客戶資料">
             <End Role="客戶資料" EntitySet="客戶資料" />
             <End Role="客戶銀行資訊" EntitySet="客戶銀行資訊" />
@@ -188,7 +208,18 @@
             <End Role="客戶資料" EntitySet="客戶資料" />
             <End Role="客戶聯絡人" EntitySet="客戶聯絡人" />
           </AssociationSet>
+          <EntitySet Name="View_客戶對應聯絡人及銀行帳戶數量" EntityType="Model.View_客戶對應聯絡人及銀行帳戶數量" />
         </EntityContainer>
+        <EntityType Name="View_客戶對應聯絡人及銀行帳戶數量">
+          <Key>
+            <PropertyRef Name="客戶Id" />
+            <PropertyRef Name="客戶名稱" />
+          </Key>
+          <Property Name="客戶Id" Type="Int32" Nullable="false" />
+          <Property Name="客戶名稱" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="聯絡人數量" Type="Int32" />
+          <Property Name="銀行帳戶數量" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -246,6 +277,16 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="手機" ColumnName="手機" />
                 <ScalarProperty Name="電話" ColumnName="電話" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_客戶對應聯絡人及銀行帳戶數量">
+            <EntityTypeMapping TypeName="Model.View_客戶對應聯絡人及銀行帳戶數量">
+              <MappingFragment StoreEntitySet="View_客戶對應聯絡人及銀行帳戶數量">
+                <ScalarProperty Name="銀行帳戶數量" ColumnName="銀行帳戶數量" />
+                <ScalarProperty Name="聯絡人數量" ColumnName="聯絡人數量" />
+                <ScalarProperty Name="客戶名稱" ColumnName="客戶名稱" />
+                <ScalarProperty Name="客戶Id" ColumnName="客戶Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
