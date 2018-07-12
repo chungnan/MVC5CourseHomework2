@@ -12,7 +12,6 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        // 09:50
         客戶資料Repository customerRepo;
 
         public 客戶資料Controller()
@@ -24,12 +23,22 @@ namespace MVC5CourseHomework.Controllers
         public ActionResult Index()
         {
             var data = customerRepo.All();
+
+            var categoryData = customerRepo.GetCustomerCategory();
+            ViewBag.custCategory = new SelectList(categoryData);
+
             return View(data);
         }
 
-        public ActionResult Search(string custName, string custUid, string custTel, string custFax)
+        public ActionResult Search(string custName, string custUid, string custTel, string custFax, string custCategory)
         {
             var data = customerRepo.Search(custName, custUid, custTel, custFax);
+
+            if (!string.IsNullOrEmpty(custCategory))
+                data = data.Where(w => w.客戶分類.Equals(custCategory));
+
+            var categoryData = customerRepo.GetCustomerCategory();
+            ViewBag.custCategory = new SelectList(categoryData);
             return View("Index", data);
         }
 

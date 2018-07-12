@@ -17,10 +17,13 @@ namespace MVC5CourseHomework.Models
 
             if (!string.IsNullOrEmpty(custName))
                 data = data.Where(w => w.客戶名稱.Contains(custName));
+
             if (!string.IsNullOrEmpty(custUid))
                 data = data.Where(w => w.統一編號.Contains(custUid));
+
             if (!string.IsNullOrEmpty(custTel))
                 data = data.Where(w => w.電話.Contains(custTel));
+
             if (!string.IsNullOrEmpty(custFax))
                 data = data.Where(w => w.傳真.Contains(custFax));
 
@@ -36,6 +39,12 @@ namespace MVC5CourseHomework.Models
         {
             entity.是否已刪除 = true;
         }
+
+        public IQueryable<string> GetCustomerCategory()
+        {
+            return this.All().Select(s => s.客戶分類).Distinct();
+        }
+
     }
 
     public  interface I客戶資料Repository : IRepository<客戶資料>
