@@ -192,6 +192,18 @@ namespace MVC5CourseHomework.Controllers
             }
         }
 
+        public JsonResult GetCount(int Id)
+        {
+            var contantData = contantRepo.All();
+            var bankData = bankRepo.All();
+
+            var data = customerRepo
+                .GetContantBankCount(contantData, bankData)
+                .Where(w => w.客戶Id.Equals(Id));
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
