@@ -174,7 +174,7 @@ namespace MVC5CourseHomework.Controllers
                     return File(
                         memoryStream.ToArray(),
                         "application/vnd.ms-excel",
-                        $"Export_客戶資料_{timeStamp}.xlsx");
+                        $"Export_客戶銀行資訊_{timeStamp}.xlsx");
                 }
             }
         }
