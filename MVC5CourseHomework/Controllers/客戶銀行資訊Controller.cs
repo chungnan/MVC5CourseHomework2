@@ -11,8 +11,8 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶銀行資訊Controller : Controller
     {
-        客戶銀行資訊Repository custBankRepo;
-        客戶資料Repository customerRepo;
+        CustomerBankRepository custBankRepo;
+        CustomerRepository customerRepo;
 
         public 客戶銀行資訊Controller()
         {

@@ -11,10 +11,10 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        客戶資料Repository customerRepo;
+        CustomerRepository customerRepo;
         View_客戶對應聯絡人及銀行帳戶數量Repository dbViewRepo;
-        客戶聯絡人Repository contantRepo;
-        客戶銀行資訊Repository bankRepo;
+        CustomerContantRepository contantRepo;
+        CustomerBankRepository bankRepo;
 
         public 客戶資料Controller()
         {

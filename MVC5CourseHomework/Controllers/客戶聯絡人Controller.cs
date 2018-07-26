@@ -15,8 +15,8 @@ namespace MVC5CourseHomework.Controllers
 {
     public class 客戶聯絡人Controller : Controller
     {
-        客戶聯絡人Repository custContantRepo;
-        客戶資料Repository customerRepo;
+        CustomerContantRepository custContantRepo;
+        CustomerRepository customerRepo;
 
         public 客戶聯絡人Controller()
         {

@@ -4,8 +4,16 @@ using System.Collections.Generic;
 
 namespace MVC5CourseHomework.Models
 {
-    public class 客戶資料Repository : EFRepository<客戶資料>, I客戶資料Repository
+
+    public class CustomerRepository : EFRepository<客戶資料>, ICustomerRepository
     {
+        public CustomerContantRepository ContantRepo { get; set; }
+
+        public CustomerRepository()
+        {
+            this.ContantRepo = RepositoryHelper.Get客戶聯絡人Repository(base.UnitOfWork);
+        }
+
         public IQueryable<客戶資料> All()
         {
             return base.All().Where(w => w.是否已刪除 == false);
@@ -66,7 +74,7 @@ namespace MVC5CourseHomework.Models
         }
     }
 
-    public interface I客戶資料Repository : IRepository<客戶資料>
+    public interface ICustomerRepository : IRepository<客戶資料>
     {
 
     }

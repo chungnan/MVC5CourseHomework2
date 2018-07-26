@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MVC5CourseHomework.Models
 {
-    public  class 客戶銀行資訊Repository : EFRepository<客戶銀行資訊>, I客戶銀行資訊Repository
+    public  class CustomerBankRepository : EFRepository<客戶銀行資訊>, ICustomerBankRepository
     {
         public IQueryable<客戶銀行資訊> All()
         {
@@ -32,7 +32,7 @@ namespace MVC5CourseHomework.Models
         }
     }
 
-    public  interface I客戶銀行資訊Repository : IRepository<客戶銀行資訊>
+    public  interface ICustomerBankRepository : IRepository<客戶銀行資訊>
     {
 
     }
