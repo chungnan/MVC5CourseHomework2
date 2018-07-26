@@ -40,7 +40,7 @@ namespace MVC5CourseHomework.Models
         public string Email { get; set; }
 
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
-        [RegularExpression(@"^09\d{2}-\d{6}", ErrorMessage = "你輸入的格式不正確，格式為 09 開頭加 8 碼數字")]
+        [RegularExpression(@"^09\d{2}-\d{6}", ErrorMessage = "你輸入的格式不正確，格式為 09XX-XXXXXX ")]
         public string 手機 { get; set; }
 
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
