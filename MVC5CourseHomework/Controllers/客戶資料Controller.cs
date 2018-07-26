@@ -25,9 +25,17 @@ namespace MVC5CourseHomework.Controllers
         }
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(string sortColumn)
         {
-            var data = customerRepo.All();
+            ViewBag.客戶名稱 = sortColumn == "客戶名稱" ? "客戶名稱_desc" : "客戶名稱";
+            ViewBag.統一編號 = sortColumn == "統一編號" ? "統一編號_desc" : "統一編號";
+            ViewBag.電話 = sortColumn == "電話" ? "電話_desc" : "電話";
+            ViewBag.傳真 = sortColumn == "傳真" ? "傳真_desc" : "傳真";
+            ViewBag.地址 = sortColumn == "地址" ? "地址_desc" : "地址";
+            ViewBag.Email = sortColumn == "Email" ? "Email_desc" : "Email";
+            ViewBag.客戶分類 = sortColumn == "客戶分類" ? "客戶分類_desc" : "客戶分類";
+
+            var data = customerRepo.SortBy(sortColumn);
 
             var categoryData = customerRepo.GetCustomerCategory();
             ViewBag.custCategory = new SelectList(categoryData);

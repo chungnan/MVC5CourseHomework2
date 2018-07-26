@@ -25,12 +25,20 @@ namespace MVC5CourseHomework.Controllers
         }
 
         // GET: 客戶聯絡人
-        public ActionResult Index()
+        public ActionResult Index(string sortColumn)
         {
+            ViewBag.職稱 = sortColumn == "職稱" ? "職稱_desc" : "職稱";
+            ViewBag.姓名 = sortColumn == "姓名" ? "姓名_desc" : "姓名";
+            ViewBag.Email = sortColumn == "Email" ? "Email_desc" : "Email";
+            ViewBag.手機 = sortColumn == "手機" ? "手機_desc" : "手機";
+            ViewBag.電話 = sortColumn == "電話" ? "電話_desc" : "電話";
+            ViewBag.客戶名稱 = sortColumn == "客戶名稱" ? "客戶名稱_desc" : "客戶名稱";
+
+            var data = custContantRepo.SortBy(sortColumn);
+
             var titleData = custContantRepo.GetContantTitle();
             ViewBag.contantTitle = new SelectList(titleData);
 
-            var data = custContantRepo.All().ToList();
             return View(data);
         }
 

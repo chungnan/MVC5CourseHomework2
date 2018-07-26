@@ -11,6 +11,57 @@ namespace MVC5CourseHomework.Models
             return base.All().Where(w => w.是否已刪除 == false);
         }
 
+        public IQueryable<客戶聯絡人> SortBy(string column)
+        {
+            var data = this.All();
+
+            switch (column)
+            {
+                case "職稱_desc":
+                    data = data.OrderByDescending(d => d.職稱);
+                    break;
+                case "職稱":
+                    data = data.OrderBy(o => o.職稱);
+                    break;
+                case "姓名_desc":
+                    data = data.OrderByDescending(d => d.姓名);
+                    break;
+                case "姓名":
+                    data = data.OrderBy(o => o.姓名);
+                    break;
+                case "Email_desc":
+                    data = data.OrderByDescending(d => d.Email);
+                    break;
+                case "Email":
+                    data = data.OrderBy(o => o.Email);
+                    break;
+                case "手機_desc":
+                    data = data.OrderByDescending(d => d.手機);
+                    break;
+                case "手機":
+                    data = data.OrderBy(o => o.手機);
+                    break;
+                case "電話_desc":
+                    data = data.OrderByDescending(d => d.電話);
+                    break;
+                case "電話":
+                    data = data.OrderBy(o => o.電話);
+                    break;
+                case "客戶名稱_desc":
+                    data = data.OrderByDescending(d => d.客戶資料.客戶名稱);
+                    break;
+                case "客戶名稱":
+                    data = data.OrderBy(o => o.客戶資料.客戶名稱);
+                    break;
+                default:
+                    data = data.OrderBy(o => o.Id);
+                    break;
+            }
+
+
+            return data;
+        }
+
         internal IQueryable<客戶聯絡人> Search(string contantName, string contantPhone, string contantTel, string contantTitle)
         {
             var data = this.All();
