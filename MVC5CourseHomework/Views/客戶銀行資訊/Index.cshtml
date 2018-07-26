@@ -9,12 +9,12 @@
 {
     <div class="form-inline">
         @Html.TextBox("bankName", null, new { @class = "form-control", placeholder = "請輸入銀行名稱" })
-        <input class="btn btn-primary" type="submit" />
+        <button type="submit" class="btn btn-primary" name="submit" value="Search">Search</button>
+        <button type="submit" class="btn btn-default" name="submit" value="Export">Export</button>
     </div>
 }
 <br />
 <p class="text-right">
-    <a href="@Url.Action("Export")" class="btn btn-default">匯出 Excel</a>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 </p>
 

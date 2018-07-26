@@ -176,6 +176,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExcelExportHelper.cs" />
     <Compile Include="Models\Customers.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -241,6 +242,7 @@
     <Compile Include="Models\客戶聯絡人Repository.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶聯絡人ViewModel.cs" />
     <Compile Include="Models\客戶資料.cs">
       <DependentUpon>Customers.tt</DependentUpon>
     </Compile>
@@ -250,6 +252,7 @@
     <Compile Include="Models\客戶資料Repository.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶資料ViewModel.cs" />
     <Compile Include="Models\客戶銀行資訊.cs">
       <DependentUpon>Customers.tt</DependentUpon>
     </Compile>
@@ -259,6 +262,7 @@
     <Compile Include="Models\客戶銀行資訊Repository.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶銀行資訊ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

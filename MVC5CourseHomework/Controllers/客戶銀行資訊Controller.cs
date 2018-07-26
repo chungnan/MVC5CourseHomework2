@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MVC5CourseHomework.Helpers;
+using MVC5CourseHomework.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using ClosedXML.Excel;
-using MVC5CourseHomework.Models;
 
 namespace MVC5CourseHomework.Controllers
 {
@@ -32,10 +29,39 @@ namespace MVC5CourseHomework.Controllers
             return View(data);
         }
 
-        public ActionResult Search(string bankName)
+        public ActionResult Search(string submit, string bankName)
         {
             var data = custBankRepo.Search(bankName);
-            return View("Index", data);
+
+            if (submit.Equals("Search"))
+            {
+                return View("Index", data);
+            }
+            else
+            {
+                int timeStamp = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+                ExcelExportHelper hepler = new ExcelExportHelper();
+
+                var exportData =
+                    data.Select(s => new 客戶銀行資訊ViewModel()
+                    {
+                        Id = s.Id,
+                        銀行名稱 = s.銀行名稱,
+                        銀行代碼 = s.銀行代碼,
+                        分行代碼 = s.分行代碼,
+                        帳戶名稱 = s.帳戶名稱,
+                        帳戶號碼 = s.帳戶號碼,
+                        客戶名稱 = s.客戶資料.客戶名稱
+                    })
+                    .ToList();
+
+                var memoryStream = hepler.Stream(exportData);
+
+                return File(
+                    memoryStream.ToArray(),
+                    "application/vnd.ms-excel",
+                    $"Export_客戶銀行資訊_{timeStamp}.xlsx");
+            }
         }
 
         // GET: 客戶銀行資訊/Details/5
@@ -142,41 +168,6 @@ namespace MVC5CourseHomework.Controllers
             custBankRepo.Delete(客戶銀行資訊);
             custBankRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
-        }
-
-        public ActionResult Export(string bankName)
-        {
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                int timeStamp = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
-
-                var data = custBankRepo
-                    .Search(bankName)
-                    .Select(s => new { s.Id, s.銀行名稱, s.銀行代碼, s.分行代碼, s.帳戶名稱, s.帳戶號碼, s.客戶資料.客戶名稱 });
-
-                var ws = wb.Worksheets.Add("cusdata", 1);
-
-                ws.Cell("A1").Value = "Id";
-                ws.Cell("B1").Value = "銀行名稱";
-                ws.Cell("C1").Value = "銀行代碼";
-                ws.Cell("D1").Value = "分行代碼";
-                ws.Cell("E1").Value = "帳戶名稱";
-                ws.Cell("F1").Value = "帳戶號碼";
-                ws.Cell("G1").Value = "客戶名稱";
-
-                ws.Cell(2, 1).InsertData(data);
-
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    return File(
-                        memoryStream.ToArray(),
-                        "application/vnd.ms-excel",
-                        $"Export_客戶銀行資訊_{timeStamp}.xlsx");
-                }
-            }
         }
 
         protected override void Dispose(bool disposing)

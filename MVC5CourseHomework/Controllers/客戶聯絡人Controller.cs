@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ClosedXML.Excel;
+using MVC5CourseHomework.Helpers;
 using MVC5CourseHomework.Models;
 
 namespace MVC5CourseHomework.Controllers
@@ -33,12 +34,41 @@ namespace MVC5CourseHomework.Controllers
             return View(data);
         }
 
-        public ActionResult Search(string contantName, string contantPhone, string contantTel, string contantTitle)
+        public ActionResult Search(string submit, string contantName, string contantPhone, string contantTel, string contantTitle)
         {
             var data = custContantRepo.Search(contantName, contantPhone, contantTel, contantTitle);
             var titleData = custContantRepo.GetContantTitle();
             ViewBag.contantTitle = new SelectList(titleData);
-            return View("Index", data);
+
+            if (submit.Equals("Search"))
+            {
+                return View("Index", data);
+            }
+            else
+            {
+                int timeStamp = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+                ExcelExportHelper hepler = new ExcelExportHelper();
+
+                var exportData =
+                    data.Select(s => new 客戶聯絡人ViewModel()
+                    {
+                        Id = s.Id,
+                        職稱 = s.職稱,
+                        姓名 = s.姓名,
+                        Email = s.Email,
+                        手機 = s.手機,
+                        電話 = s.電話,
+                        客戶名稱 = s.客戶資料.客戶名稱
+                    })
+                    .ToList();
+
+                var memoryStream = hepler.Stream(exportData);
+
+                return File(
+                    memoryStream.ToArray(),
+                    "application/vnd.ms-excel",
+                    $"Export_客戶聯絡人_{timeStamp}.xlsx");
+            }
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -145,43 +175,6 @@ namespace MVC5CourseHomework.Controllers
             custContantRepo.Delete(客戶聯絡人);
             custContantRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
-        }
-
-
-
-        public ActionResult Export(string contantName, string contantPhone, string contantTel, string contantTitle)
-        {
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                int timeStamp = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
-
-                var data = custContantRepo
-                    .Search(contantName, contantPhone, contantTel, contantTitle)
-                    .Select(s => new { s.Id, s.職稱, s.姓名, s.Email, s.手機, s.電話, s.客戶資料.客戶名稱 });
-
-                var ws = wb.Worksheets.Add("cusdata", 1);
-
-                ws.Cell("A1").Value = "Id";
-                ws.Cell("B1").Value = "職稱";
-                ws.Cell("C1").Value = "姓名";
-                ws.Cell("D1").Value = "Email";
-                ws.Cell("E1").Value = "手機";
-                ws.Cell("F1").Value = "電話";
-                ws.Cell("G1").Value = "客戶名稱";
-
-                ws.Cell(2, 1).InsertData(data);
-
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    return File(
-                        memoryStream.ToArray(),
-                        "application/vnd.ms-excel",
-                        $"Export_客戶聯絡人_{timeStamp}.xlsx");
-                }
-            }
         }
 
         protected override void Dispose(bool disposing)
