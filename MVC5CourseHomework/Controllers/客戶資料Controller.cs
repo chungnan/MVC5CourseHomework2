@@ -10,6 +10,7 @@ using X.PagedList;
 
 namespace MVC5CourseHomework.Controllers
 {
+    [ShareLog]
     public class 客戶資料Controller : Controller
     {
         CustomerRepository customerRepo;

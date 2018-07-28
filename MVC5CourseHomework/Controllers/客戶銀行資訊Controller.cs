@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MVC5CourseHomework.Controllers
 {
+    [ShareLog]
     public class 客戶銀行資訊Controller : Controller
     {
         CustomerBankRepository custBankRepo;

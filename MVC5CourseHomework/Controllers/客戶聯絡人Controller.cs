@@ -14,6 +14,7 @@ using MVC5CourseHomework.Models;
 
 namespace MVC5CourseHomework.Controllers
 {
+    [ShareLog]
     public class 客戶聯絡人Controller : Controller
     {
         CustomerContantRepository custContantRepo;
