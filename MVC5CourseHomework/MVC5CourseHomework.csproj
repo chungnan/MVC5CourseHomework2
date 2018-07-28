@@ -239,6 +239,7 @@
     <Compile Include="Models\客戶聯絡人.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\客戶聯絡人BatchViewModel.cs" />
     <Compile Include="Models\客戶聯絡人Repository.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
@@ -346,9 +347,12 @@
     <Content Include="Views\客戶銀行資訊\Index.cshtml" />
     <Content Include="Views\客戶資料\DbViewList.cshtml" />
     <Content Include="Views\客戶資料\ViewModelList.cshtml" />
+    <Content Include="Views\客戶聯絡人\BatchUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

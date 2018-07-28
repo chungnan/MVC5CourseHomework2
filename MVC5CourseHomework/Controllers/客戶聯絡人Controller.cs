@@ -42,6 +42,44 @@ namespace MVC5CourseHomework.Controllers
             return View(data);
         }
 
+        [Route("BatchUpdate")]
+        public ActionResult BatchUpdate(string sortColumn)
+        {
+            ViewBag.職稱 = sortColumn == "職稱" ? "職稱_desc" : "職稱";
+            ViewBag.姓名 = sortColumn == "姓名" ? "姓名_desc" : "姓名";
+            ViewBag.Email = sortColumn == "Email" ? "Email_desc" : "Email";
+            ViewBag.手機 = sortColumn == "手機" ? "手機_desc" : "手機";
+            ViewBag.電話 = sortColumn == "電話" ? "電話_desc" : "電話";
+            ViewBag.客戶名稱 = sortColumn == "客戶名稱" ? "客戶名稱_desc" : "客戶名稱";
+
+            var data = custContantRepo.SortBy(sortColumn);
+
+            var titleData = custContantRepo.GetContantTitle();
+            ViewBag.contantTitle = new SelectList(titleData);
+
+            return View(data);
+        }
+
+        [HttpPost]
+        [Route("BatchUpdate")]
+        public ActionResult BatchUpdate(客戶聯絡人BatchViewModel[] data)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in data)
+                {
+                    var 客戶聯絡人 = custContantRepo.Find(item.Id);
+                    客戶聯絡人.職稱 = item.職稱;
+                    客戶聯絡人.手機 = item.手機;
+                    客戶聯絡人.電話 = item.電話;
+                }
+                custContantRepo.UnitOfWork.Commit();
+                return RedirectToAction("Index");
+            }
+            ViewData.Model = custContantRepo.All().OrderByDescending(o => o.Id).Take(10);
+            return View("BatchUpdate");
+        }
+
         public ActionResult Search(string submit, string contantName, string contantPhone, string contantTel, string contantTitle)
         {
             var data = custContantRepo.Search(contantName, contantPhone, contantTel, contantTitle);
