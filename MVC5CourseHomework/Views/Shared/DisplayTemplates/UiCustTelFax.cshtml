@@ -1,0 +1,9 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model.ToString()))
+{
+    string item = Model.ToString();
+    string strFirst = item.Substring(0, 2);
+    string strLast = item.Substring(2);
+    @($"{strFirst}-{strLast}");
+}

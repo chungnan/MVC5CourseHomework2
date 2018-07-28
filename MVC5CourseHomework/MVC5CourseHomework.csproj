@@ -527,10 +527,11 @@
     <Content Include="Views\Razor\Ui.cshtml" />
     <Content Include="Views\Razor\Widgets.cshtml" />
     <Content Include="Views\Razor\Login.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UiCustTelFax.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UiBankCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Shared\DisplayTemplates\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>

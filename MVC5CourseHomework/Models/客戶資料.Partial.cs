@@ -25,10 +25,12 @@ namespace MVC5CourseHomework.Models
 
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
         [Required]
+        [UIHint("UiCustTelFax")]
         [RegularExpression(@"^[0]\d{8,9}", ErrorMessage = "你輸入的格式不正確，格式為 0 開頭加 8 或 9 碼數字")]
         public string 電話 { get; set; }
 
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
+        [UIHint("UiCustTelFax")]
         [RegularExpression(@"^[0]\d{8,9}", ErrorMessage = "你輸入的格式不正確，格式為 0 開頭加 8 或 9 碼數字")]
         public string 傳真 { get; set; }
 

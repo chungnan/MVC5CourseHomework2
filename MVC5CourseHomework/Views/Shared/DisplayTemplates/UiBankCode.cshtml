@@ -1,0 +1,8 @@
+﻿@model int?
+
+@if (Model != null)
+{
+    string result = string.Format("{0:000}", Model);
+
+    @result;
+}
