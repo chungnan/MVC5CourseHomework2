@@ -348,6 +348,7 @@
     <Content Include="Views\客戶資料\DbViewList.cshtml" />
     <Content Include="Views\客戶資料\ViewModelList.cshtml" />
     <Content Include="Views\客戶聯絡人\BatchUpdate.cshtml" />
+    <Content Include="Views\Shared\Error_DbEntityValidationException.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

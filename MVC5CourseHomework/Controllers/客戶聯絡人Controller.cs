@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -62,6 +63,7 @@ namespace MVC5CourseHomework.Controllers
 
         [HttpPost]
         [Route("BatchUpdate")]
+        [HandleError(ExceptionType = typeof(DbEntityValidationException), View = "Error_DbEntityValidationException")]
         public ActionResult BatchUpdate(客戶聯絡人BatchViewModel[] data)
         {
             if (ModelState.IsValid)
